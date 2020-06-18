@@ -55,48 +55,28 @@ export default function FootBar() {
           <Grid item xs={6} sm={4} md={3}>
           <Copyright />
           </Grid>
-          <Grid item xs={6} sm={8} md={4}>
+          <Grid style={{position:"relative", top:"-25%"}} item xs={6} sm={8} md={4}>
             <Typography variant="h6" marked="left" gutterBottom>
-              made by Yaas
+              Made By YaaS
             </Typography>
-            team Leader : 
+            Team Leader : 
             <Link href="https://github.com/wonjinkim111" rel="team" title="kimwonjin">
-            &nbsp; wonjin Kim <br/>
+            &nbsp; Wonjin Kim <br/>
             </Link>
             Front-end : 
             <Link href="https://github.com/jingnee" rel="team" title="chojiyun">
-            &nbsp; jiyun Cho
+            &nbsp; Jiyun Cho
             </Link>
             , &nbsp;
             <Link href="https://github.com/ry7791" rel="team" title="gojunguk">
-                junguk Go <br/>
+                Junguk Go <br/>
             </Link>
             Back-end : 
             <Link href="https://github.com/nangzz" rel="team" title="kangmina">
-            &nbsp; mina Kang
+            &nbsp; Mina Kang
             </Link>
           </Grid>
-          <Grid item>
-          <Typography variant="caption">
-              {'Icons made by '}
-              <Link href="https://www.freepik.com" rel="sponsored" title="Freepik">
-                Freepik
-              </Link>
-              {' from '}
-              <Link href="https://www.flaticon.com" rel="sponsored" title="Flaticon">
-                www.flaticon.com
-              </Link>
-              {' is licensed by '}
-              <Link
-                href="https://creativecommons.org/licenses/by/3.0/"
-                title="Creative Commons BY 3.0"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                CC 3.0 BY
-              </Link>
-            </Typography>
-              </Grid>
+         
         </Grid>
       </Container>
     </Typography>

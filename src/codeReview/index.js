@@ -355,7 +355,10 @@ handleState = (state) =>{
     <button className="selectButton2" onClick={this.handleCompile} type="button">실행</button>
      
  </div>
- <div className="compile_result_content"  value={111} placeholder="실행 결과가 여기에 표시됩니다.">{compile_result}</div>
+ <div className="compile_result_content"  value={111} placeholder="실행 결과가 여기에 표시됩니다.">
+ 
+ <textarea className="compile_result_content1" readonly value={compile_result}></textarea>
+ </div>
 
 </div>
 

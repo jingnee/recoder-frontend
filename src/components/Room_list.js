@@ -18,6 +18,7 @@ const useStyles = theme => ({
     root: {
         display: 'flex',
         flexWrap: 'wrap',
+        overflowX : "hidden",
         justifyContent: 'space-around',
         overflow: 'scroll',
         backgroundColor: theme.palette.background.paper,
