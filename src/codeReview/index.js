@@ -23,7 +23,9 @@ class App extends Component{
     this.state = {
       myBackgroundColor : '#1b2b34',
       myColor : '#b2c0cc',
+      myBorderColor : 'black', 
       error: '',
+      compileFlag: 0,
       flag: 0,
       compileResult: '',
       update_flag:0,
@@ -86,6 +88,7 @@ axios.get(url)
      axios.get(url1)
         .then(response =>{
            this.setState({ reviewReq : response.data})
+           console.log("33333333333333333333333333333333")
            console.log(this.state.reviewReq)
       })
         // 응답(실패)
@@ -121,8 +124,9 @@ axios.get(url)
     compile_result=this.state.compileResult;
   }
 
-
-
+handleCompileFlag =(e)=>{
+  this.setState({compileFlag: e})
+}
 // handleCompile = (result1) =>{
 //   this.setState({compile_result: result1});
 //   console.log(result1);
@@ -165,17 +169,20 @@ handleCloseModal = () =>{
 handleBackgoundColor = (e) =>{
   if(e === "darkBlue"){   //OceanicNext 테마 일 경우
     this.setState({myBackgroundColor : "#1b2b34",
-                myColor: "#b2c0cc"
+                myColor: "#b2c0cc",
+                myBorderColor : "black"
     })
   }
   else if(e === "hc-black"){   //hc-black 테마 일 경우
     this.setState({myBackgroundColor : "black",
-                myColor: "white"
+                myColor: "white",
+                myBorderColor : "gray"
     })
   }
-  else{  //vs 테마일 경우
+  else{  //vs-white 테마일 경우
     this.setState({myBackgroundColor : "white",
-    myColor: "black"
+    myColor: "black",
+    myBorderColor : "#dedee3"
 })
   }
   console.log(this.state.myBackgroundColor)
@@ -234,13 +241,17 @@ else{
 }
 
 handleCompile_content = (e) =>{
+
 this.setState({compileContent : e})
 }
 
 handleCompile = () => { //실행 버튼 클릭 했을 때
   //console.log(this.editor.getValue().replace(/ /g,"")); //모든 공백 제거
   //console.log(this.editor.getValue().replace(/\s/gi,""));//모든 공백 제거
-console.log(this.state.compileContent)
+  
+//console.log("index.내용")
+  //console.log(this.state.compileContent)
+  if(this.state.codeState === 'mentee'){
 const getUrl = document.location.href.split("/");
 const len = getUrl.length;
 console.log(getUrl[len-1]);
@@ -258,6 +269,10 @@ console.log(getUrl[len-1]);
     });
     console.log("여기다")
     console.log("111111111111111111111"+compile_result)
+  }
+  else{
+    this.setState({compileFlag:1})
+  }
 };
 
 
@@ -278,7 +293,6 @@ handleRemove=(lineNum)=>{
 }
 
 handleChange= e =>{
-  document.getElementsByClassName("left1").style.backGroundColor="white"
   this.setState({text : e.target.value})
 }
 
@@ -306,7 +320,7 @@ handleState = (state) =>{
   }
   
   render() {
-    const { lineNumber, outputText, comment_tb, modal_start, handleCompile, myBackgroundColor, myColor } = this.state;
+    const { lineNumber, outputText, comment_tb, modal_start, handleCompile, myBackgroundColor, myColor,myBorderColor, compileFlag} = this.state;
 
 
     return ( 
@@ -339,17 +353,17 @@ handleState = (state) =>{
 </Dialog>
 
 {/* 왼쪽 */}
-<div  className="left1" style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`}}>
-    <div className="title" style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`}}> 
+<div  className="left1" style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`,border : `1px solid ${this.state.myBorderColor}`}}>
+    <div className="title" style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`,border : `2px solid ${this.state.myBorderColor}`}}> 
     <div className="content" style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`}}> &nbsp;  {this.state.reviewReq.reviewTitle}</div>
       <button className="exit" onClick={this.exit} type="button">나가기</button>
     </div>
-    <div className = "review_mentee_content" style={{color : `${this.state.myColor}`}}>
-    {this.state.reviewReq.reviewContent}
-    </div>
-    <div className="title"style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`}}> <div className="content"style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`}}> &nbsp; Review </div></div>
-    <div className="review_comment" style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`}} >
-      <div>&nbsp;</div>
+    <textarea className = "review_mentee_content" value={this.state.reviewReq.reviewContent}readOnly style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`}}>
+    
+    </textarea>
+    <div className="title"style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`,border : `2px solid ${this.state.myBorderColor}`}}> <div className="content"style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`}}> &nbsp; Review </div></div>
+    <div className="review_comment" style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`,border : `1px solid ${this.state.myBorderColor}`}} >
+      <div style={{ fontSize:"0.5px"}}>&nbsp;</div>
     <Comment  handleRemove={this.handleRemove} 
                   lineNumber={lineNumber} 
                   outputText={outputText}
@@ -358,7 +372,7 @@ handleState = (state) =>{
                   comment_tb={comment_tb}/>
     </div>
 </div>
-<div   className="left2"style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`}} >
+<div   className="left2"style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`, border : `1px solid ${this.state.myBorderColor}`}} >
   <div className="review_editor" style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`}}>
 
   <CodeEditor handleOutputText={this.handleOutputText} 
@@ -368,13 +382,16 @@ handleState = (state) =>{
                     handleCompile_content={this.handleCompile_content}
                     myBackgroundColor={myBackgroundColor}
                     myColor={myColor}
+                    compileFlag={compileFlag}
+                    handleCompileFlag={this.handleCompileFlag}
+                    myBorderColor={myBorderColor}
                     handleCompile1={handleCompile}
                     handleBackgoundColor={this.handleBackgoundColor}
                     />
 
 
   </div>
-  <div className="title"style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`}}> 
+  <div className="title"style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`, border : `2px solid ${this.state.myBorderColor}`}}> 
     <div className="content"style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`}}> &nbsp; 실행결과  </div>
     <button className="selectButton2" onClick={this.handleCompile} type="button">실행</button>
      

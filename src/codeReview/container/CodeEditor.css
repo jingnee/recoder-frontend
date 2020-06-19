@@ -11,32 +11,34 @@
 }
  .selectButton_mentee{
     position : relative;
-    height: 100%;
+
+    height: 90%;
     padding-left: 1%;
     padding-right: 1%;
     float:left;
     left: 1%;
     font-size: 80%;
     border-radius:0.3em;
-    border:1px solid gray;
+    box-shadow: 2px 2px 2px black;
     color:white;
     font-weight : bold;
-    background-color: #337ab7;
+    background-color: #37485d;
 
 }
 .selectButton_mentor{
     position : relative;
-    height: 100%;
+
+    height: 90%;
     padding-left: 1%;
     padding-right: 1%;
     float:left;
     left: 2%;
     font-size: 80%;
     border-radius:0.3em;
-    border:1px solid gray;
+    box-shadow: 2px 2px 2px black;
     color:white;
     font-weight : bold;
-    background-color: #d9534f;
+    background-color: #37485d;
 
 }
 
@@ -49,14 +51,14 @@
     border-radius:0.3em;
     border:1px solid gray;
     color:white;
-    background-color: #5cb85c;
+    background-color: #37485d;
    
 }
 .selectButton3{
 
     position : relative;
 
-    height:100%;
+    height:98%;
 float:right;
 
 
@@ -118,10 +120,8 @@ float:right;
         
         .title1{
             position: relative;
-            border: 1px solid #3e1e7c;
-            border-top-width: 0px;
-            border-right-width: 0px;
-            border-left-width: 0px;
+            border: 1px solid black;
+
             font-size: 1.5em;
             font-family: "나눔고딕";
             height:5vh;

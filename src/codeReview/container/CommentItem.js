@@ -31,7 +31,9 @@ const useStyles = makeStyles({
 
   },
   content:{
-    color: "white",
+    color: "coral",
+    fontSize:14,
+    paddingBottom: 5
   },
   bullet: {
     display: 'inline-block',
@@ -165,13 +167,13 @@ export default function CommentItem(props) {
             </Dialog>
             <Card className={classes.root} variant="outlined"style={{backgroundColor:`${props.myBackgroundColor}`,color : `${props.myColor}`}}>
                 <CardContent>
-                    <Typography className={classes.title} color="textSecondary" gutterBottom>
+                    <Typography className={classes.title} color="textSecondary" gutterBottom style={{backgroundColor:`${props.myBackgroundColor}`,color : `${props.myColor}`}}> 
                         Line{' '} {props.cmt_line_number}<br />
                     </Typography>
-                    <Typography className={classes.content} color="textSecondary" variant="h5" component="h2" >
-                        &nbsp; {props.menteeCode}
+                    <Typography className={classes.content} color="textSecondary" variant="h5" component="h2" style={{backgroundColor:`${props.myBackgroundColor}`,color : `${props.myColor}`}} >
+                        &nbsp; {props.cmtCode}
                     </Typography>
-                    <Typography className={classes.content} variant="body2" component="p">
+                    <Typography className={classes.content} variant="body2" component="p" style={{color : "coral"}}>
                         {props.content}
                     </Typography>
                 </CardContent>

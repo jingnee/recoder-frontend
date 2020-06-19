@@ -163,7 +163,7 @@ function (_React$Component) {
         Object.assign(options, this.editorWillMount());
         this.editor = monaco.editor.create(this.containerElement, _objectSpread({
           value: value,
-          fontSize: "20px",
+          fontSize: "18px",
           roundedSelection: true,
           //contextmenu: false,
           //cursorWidth: 0,

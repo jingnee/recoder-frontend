@@ -7,7 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import axios from 'axios';
 
-
+var myCompileFlag=0;
 var color_flag = 1;
 class CodeEditor extends React.Component {
   constructor(props) {
@@ -62,25 +62,26 @@ class CodeEditor extends React.Component {
     }
 
     if (color_flag < 0) {
-      //   this.editor.deltaDecorations(   //내용이 추가되야 라인색깔이 적용이 되기 때문에 빈데이터 하나 추가해줌
-      //   this.editor.getModel().getAllDecorations(),
-      //   [ 
-      //     {
-      //       range: {startLineNumber: 0, startColumn: 0, endLineNumber: 0, endColumn: 0},
-      //       options: {
-      //         isWholeLine: true,
-      //         className: '1'
-      //       }
-      //     },
-      //   ]
-      // );//decoration 끝
+      console.log(this.editor.getModel().getAllDecorations())
+      this.editor.deltaDecorations(
+        this.editor.getModel().getAllDecorations(),
+        [
+          {
+            range:this.editor.getModel().getAllDecorations()[2].range,
+            options: {
+
+            }
+          },
+        ]
+      );//decoration 끝     
+      
     }
 
   }
 
   editorDidMount = (editor) => {
     this.editor = editor;
-
+    
     import('monaco-themes/themes/Oceanic Next.json')
     .then(data => {
         monaco.editor.defineTheme('OceanicNext', data);
@@ -143,6 +144,8 @@ class CodeEditor extends React.Component {
   handleCompile = () => { //실행 버튼 클릭 했을 때
     //console.log(this.editor.getValue().replace(/ /g,"")); //모든 공백 제거
     //console.log(this.editor.getValue().replace(/\s/gi,""));//모든 공백 제거
+    // console.log("컴파일")
+    //console.log(this.editor.getValue())
     if (this.editor) {
       if (this.state.code_state === "mentee")
         this.setState({ menteeCode: this.editor.getValue() });
@@ -169,13 +172,19 @@ class CodeEditor extends React.Component {
         console.log(error);
       });
   };
+  handleCompileMentor = () =>{
+
+  }
 
   changeByMentee = () => {
+    this.props.handleCompile_content(monaco.editor.getModels()[1].getValue())
+    //console.log(monaco.editor.getModels()[1].getValue())
+    //console.log("888888888888888888888888888888")
     this.setState({
       code_state: 'mentee',
       code: this.state.menteeCode,
     });
-    this.props.handleCompile_content(this.state.mentorCode)
+    // this.props.handleCompile_content(this.state.mentorCode)
     document.getElementById("mentorEditor").style.visibility = "hidden"   //Monaco 에티터를 멘티,멘토 두개 만들어놔서 멘토 에디터 hidden 멘티 에디터는 block으로
     document.getElementById("menteeEditor").style.display = "block"       // 에디터 한개만 보여지게 설정
     document.getElementById("menteeEditor").style.top = "-40.7vh"
@@ -207,14 +216,18 @@ class CodeEditor extends React.Component {
   }
 
   changeByMentor = () => {
+    
+    
     this.setState({
       code_state: 'mentor',
       code: this.state.mentorCode,
     });
-    this.props.handleCompile_content(this.state.mentorCode)
+    // this.props.handleCompile_content(this.state.mentorCode)
     document.getElementById("mentorEditor").style.visibility = "visible"
     document.getElementById("menteeEditor").style.display = "none"
-
+    this.props.handleCompile_content(monaco.editor.getModels()[0].getValue())
+    //console.log(monaco.editor.getModels()[0].getValue())
+    //console.log("888888888888888888888888888888")
     this.props.handleState('mentor');
     //readOnly : true -> false
     this.setState(prevState => ({
@@ -226,6 +239,8 @@ class CodeEditor extends React.Component {
   }
 
   setLanguage = (e) => {
+    //console.log(document.getElementsByClassName("view-lines")[1].innerText)
+    console.log(monaco.editor.getModels()[0].getValue())
     if (e.target.value === 'java') this.setState({ language1: 0 })
     else if (e.target.value === 'c') this.setState({ language1: 1 })
     else if (e.target.value === 'cpp') this.setState({ language1: 2 })
@@ -254,18 +269,53 @@ class CodeEditor extends React.Component {
 
   render() {
     const { code, theme, language, lineSelect, options, code_state } = this.state;
+     
+    if(this.props.compileFlag === 1){
+
+      if(  myCompileFlag%2===0){
+        console.log("성공")
+        console.log(monaco.editor.getModels()[0].getValue())
+        const url = 'http://59.29.224.144:30000/codereview';
+        axios.post(url,{
+          roomId: 1,
+            mentorId: 1,
+            menteeId: 1,
+            reviewLanguage: this.state.language1,
+            reviewContent: "1",
+            reviewTitle: "1",
+            reviewContent: `${monaco.editor.getModels()[0].getValue()}`
+        })
+         .then(response =>{console.log(response.data)
+            console.log("됩니다유")
+         
+        }
+          ) 
+          .catch(error => {
+            console.log(error);
+            alert("다시 시도해 주십시오")
+          })
+
+          
+
+
+        this.props.handleCompileFlag(0)
+      }
+      myCompileFlag++;
+      }
 
     return (
       <div className="layout">
+        
         {/* <div style={{height:'5vh',border:'1px solid grey'}}> */}
-        <div className="title1" style={{backgroundColor:`${this.props.myBackgroundColor}`}}>
+        <div className="title1" style={{backgroundColor:`${this.props.myBackgroundColor}`,border :`2px solid ${this.props.myBorderColor}`}}>
           <button className="selectButton_mentee" onClick={this.changeByMentee} type="button">
             멘티
             </button>
+            
           <button className="selectButton_mentor" onClick={this.changeByMentor} type="button">
             멘토
             </button>
-
+         
 
           <select className="selectButton3" id="theme" value={this.state.value} onChange={this.setTheme} >
             <option value="hc-black">&nbsp;dark&nbsp;</option>
@@ -306,7 +356,7 @@ class CodeEditor extends React.Component {
 
         </div >
 
-        <div id="mentorEditor" style={{ display: "block", visibility: "hidden", zIndex: "-1" }}>
+        <div id="mentorEditor" style={{ display: "block", visibility: "hidden", zIndex: "-1", border : `1px solid ${this.props.myBorderColor}` }}>
 
           <MonacoEditor
             height="45.9vh"
@@ -324,7 +374,7 @@ class CodeEditor extends React.Component {
             modal_start={this.props.modal_start}
           />
         </div>
-        <div id="menteeEditor" style={{ display: "block", position: "relative", top: "-41vh", zIndex: "1" }}>
+        <div id="menteeEditor" style={{ display: "block", position: "relative", top: "-41vh", zIndex: "1", border : `1px solid ${this.props.myBorderColor}` }}>
           <MonacoEditor
             height="45.9vh"
             width="55vw"
