@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect}  from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -23,11 +23,11 @@ const useStyles = makeStyles({
   root: {
     minWidth: 275,
     border: "1px solid grey",
-   
-    backgroundColor: "black",
+    backgroundColor: '',
   },
   root1: {
     minWidth: 275,
+
 
   },
   content:{
@@ -52,6 +52,7 @@ export default function CommentItem(props) {
   const [open,setOpen]=React.useState(false);
   const [realOpen, setRealOpen]=React.useState(false);
   const [text, setText] = React.useState();
+  const [nickname, setNickname] = React.useState();
 
   //댓글 : modal2
   const handleOpenContent = (e) => {
@@ -63,15 +64,13 @@ export default function CommentItem(props) {
     //console.log(this.state.text)
     const getUrl = document.location.href.split("/");
     const len = getUrl.length;
-    
-    console.log(props.comment_cmtId)
     console.log(text)
     console.log(props.nickname)
     const url = 'http://59.29.224.144:40000/comment/reply';
     axios.post(url, {
-      cmtId: props.comment_cmtId,
+      cmtId: props.cmtId,
       replyContent: text,
-      nickname: props.nickname,
+      nickname: nickname,
     })
       .then(response => {
         console.log(response.data)
@@ -127,22 +126,27 @@ export default function CommentItem(props) {
       [e.target.name]: e.target.value
     })
   }
-  // handleSubmit = () => {
-  //   const url = ``;
-  //   axios.post(url, {
+  useEffect(() => {
+    const userData = JSON.parse(sessionStorage.getItem('user'));
+    const state = JSON.parse(sessionStorage.getItem('state'));
+        const url = `http://59.29.224.144:10000/users/${userData.id}`;
+        axios.get(url)
+         .then(response =>{
+             if(state ==='mentee'){
+             setNickname(response.data.menteeNickname)
+             }
+             else{
+                setNickname(response.data.mentorNickname)
+             }
 
-  //   }).then(response => {
-  //     console.log(response.headers)
-  //     alert('댓글이 추가되었습니다.');
-  //     window.location.href = '/review';
+        }) 
+          .catch(error => {
+            // alert("error")
+            console.log(error);
+          })
 
-  //   }
-  //   )
-  //     .catch(error => {
-  //       alert("다시 시도해 주십시오")
-  //       //   setValues({roomName:'', roomInfo:''});
-  //     })
-  // }
+
+  }, []);
 
     return (
         <div>
@@ -159,7 +163,7 @@ export default function CommentItem(props) {
                 </div>
                 {/* <div className="modal_layer"></div> */}
             </Dialog>
-            <Card className={classes.root} variant="outlined">
+            <Card className={classes.root} variant="outlined"style={{backgroundColor:`${props.myBackgroundColor}`,color : `${props.myColor}`}}>
                 <CardContent>
                     <Typography className={classes.title} color="textSecondary" gutterBottom>
                         Line{' '} {props.cmt_line_number}<br />

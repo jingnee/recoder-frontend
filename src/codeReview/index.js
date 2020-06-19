@@ -21,6 +21,8 @@ class App extends Component{
     super(props);
   
     this.state = {
+      myBackgroundColor : '#1b2b34',
+      myColor : '#b2c0cc',
       error: '',
       flag: 0,
       compileResult: '',
@@ -158,9 +160,26 @@ handleCloseModal = () =>{
   this.setState({modal_start:0})
   this.setState({open: false});
   //document.getElementById("modal").style.display="none";
+}
 
-  
-
+handleBackgoundColor = (e) =>{
+  if(e === "darkBlue"){   //OceanicNext 테마 일 경우
+    this.setState({myBackgroundColor : "#1b2b34",
+                myColor: "#b2c0cc"
+    })
+  }
+  else if(e === "hc-black"){   //hc-black 테마 일 경우
+    this.setState({myBackgroundColor : "black",
+                myColor: "white"
+    })
+  }
+  else{  //vs 테마일 경우
+    this.setState({myBackgroundColor : "white",
+    myColor: "black"
+})
+  }
+  console.log(this.state.myBackgroundColor)
+  console.log(this.state.myColor)
 }
 handleSubmitModal = () =>{
   this.setState({error:''})
@@ -259,6 +278,7 @@ handleRemove=(lineNum)=>{
 }
 
 handleChange= e =>{
+  document.getElementsByClassName("left1").style.backGroundColor="white"
   this.setState({text : e.target.value})
 }
 
@@ -273,9 +293,7 @@ handleState = (state) =>{
     this.setState({flag:1});
   }
 
-  handlePosition=(e)=>{
-    console.log("1111"+document.getElementById("left1").style.width)
-  }
+
   //멘토인경우 멘토 룸 리스트로, 멘티인경우 멘티대쉬보드의 룸리스트로
   exit = ()=>{
     const state = JSON.parse(sessionStorage.getItem('state'));
@@ -288,10 +306,10 @@ handleState = (state) =>{
   }
   
   render() {
-    const { lineNumber, outputText, comment_tb, modal_start, handleCompile } = this.state;
+    const { lineNumber, outputText, comment_tb, modal_start, handleCompile, myBackgroundColor, myColor } = this.state;
 
 
-    return (
+    return ( 
       <div className="total-layout"> 
      
 
@@ -321,43 +339,49 @@ handleState = (state) =>{
 </Dialog>
 
 {/* 왼쪽 */}
-<div   className="left1" >
-    <div className="title"> 
-    <div className="content"> &nbsp;  {this.state.reviewReq.reviewTitle}</div>
+<div  className="left1" style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`}}>
+    <div className="title" style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`}}> 
+    <div className="content" style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`}}> &nbsp;  {this.state.reviewReq.reviewTitle}</div>
       <button className="exit" onClick={this.exit} type="button">나가기</button>
     </div>
-    <div className = "review_mentee_content">
+    <div className = "review_mentee_content" style={{color : `${this.state.myColor}`}}>
     {this.state.reviewReq.reviewContent}
     </div>
-    <div className="title"> <div className="content"> &nbsp; Review </div></div>
-    <div className="review_comment">
+    <div className="title"style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`}}> <div className="content"style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`}}> &nbsp; Review </div></div>
+    <div className="review_comment" style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`}} >
       <div>&nbsp;</div>
     <Comment  handleRemove={this.handleRemove} 
                   lineNumber={lineNumber} 
                   outputText={outputText}
+                  myBackgroundColor={myBackgroundColor}
+                  myColor={myColor}
                   comment_tb={comment_tb}/>
     </div>
 </div>
-<div   className="left2" >
-  <div className="review_editor">
+<div   className="left2"style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`}} >
+  <div className="review_editor" style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`}}>
 
   <CodeEditor handleOutputText={this.handleOutputText} 
                     modal_start={modal_start}
                     handleState={this.handleState} 
                     comment_tb={comment_tb}
                     handleCompile_content={this.handleCompile_content}
-                    handleCompile1={handleCompile}/>
+                    myBackgroundColor={myBackgroundColor}
+                    myColor={myColor}
+                    handleCompile1={handleCompile}
+                    handleBackgoundColor={this.handleBackgoundColor}
+                    />
 
 
   </div>
-  <div className="title"> 
-    <div className="content"> &nbsp; 실행결과  </div>
+  <div className="title"style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`}}> 
+    <div className="content"style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`}}> &nbsp; 실행결과  </div>
     <button className="selectButton2" onClick={this.handleCompile} type="button">실행</button>
      
  </div>
- <div className="compile_result_content"  value={111} placeholder="실행 결과가 여기에 표시됩니다.">
+ <div className="compile_result_content" style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`}}value={111} placeholder="실행 결과가 여기에 표시됩니다.">
  
- <textarea className="compile_result_content1" readonly value={compile_result}></textarea>
+ <textarea className="compile_result_content1"style={{backgroundColor:`${this.state.myBackgroundColor}`,color : `${this.state.myColor}`}} readonly value={compile_result}></textarea>
  </div>
 
 </div>

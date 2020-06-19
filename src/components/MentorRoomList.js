@@ -63,7 +63,7 @@ const useStyles = makeStyles({
     borderRadius:"0.3em",
     border:"1px solid gray",
     color:"white",
-    backgroundColor: "white",
+    backgroundColor: "purple",
     fontWeight : "bold",
   }
 });
@@ -135,8 +135,8 @@ export default function MentorRoomList() {
                 <StyledTableCell align="center">{list.roomName}</StyledTableCell>
                 <StyledTableCell align="center">{list.roomMax}</StyledTableCell>
                 <StyledTableCell align="center" >
-                  <button className={classes.button} value={list.roomId} >
-                    <Link to ={`/mentordashboard/${list.roomId}`}>
+                  <button className={classes.button} color="white" value={list.roomId} >
+                    <Link to ={`/mentordashboard/${list.roomId}`} style={{color:"white"}}>
                     입장
                     </Link>
                     </button>

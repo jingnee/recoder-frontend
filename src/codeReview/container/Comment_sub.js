@@ -58,7 +58,8 @@ class Comment_sub extends Component {
     console.log(this.state.text)
     const getUrl = document.location.href.split("/");
     const len = getUrl.length;
-
+console.log("댓글")
+console.log(comment_cmtId)
     const user_nickname = sessionStorage.getItem('user.nickname')
     const url = 'http://59.29.224.144:40000/comment/reply';
     axios.post(url, {

@@ -7,6 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import axios from 'axios';
 
+
 var color_flag = 1;
 class CodeEditor extends React.Component {
   constructor(props) {
@@ -80,6 +81,12 @@ class CodeEditor extends React.Component {
   editorDidMount = (editor) => {
     this.editor = editor;
 
+    import('monaco-themes/themes/Oceanic Next.json')
+    .then(data => {
+        monaco.editor.defineTheme('OceanicNext', data);
+        monaco.editor.setTheme('OceanicNext');
+    })
+  
     this.editor.onMouseDown(e => {
       console.log(e.target.position)
       if (this.state.code_state === 'mentee' && this.state.lineSelect === 'on') {  //멘티창에서 line선택기능이 on 일때만 커맨트 달 수 있음
@@ -226,6 +233,7 @@ class CodeEditor extends React.Component {
 
   setTheme = (e) => {
     this.setState({ theme: e.target.value })
+    this.props.handleBackgoundColor(e.target.value);
     console.log(this.state.comment_tb)
     console.log(this.editor.getModel().getAllDecorations())
     if (e.target.value === "vs-white") {
@@ -233,6 +241,10 @@ class CodeEditor extends React.Component {
     }
     else if (e.target.value === "hc-black") {
       this.changeBackColor("myLineDecorationBlack");
+    }
+    else {
+      this.changeBackColor("myLineDecorationBlack");
+
     }
   }
 
@@ -246,7 +258,7 @@ class CodeEditor extends React.Component {
     return (
       <div className="layout">
         {/* <div style={{height:'5vh',border:'1px solid grey'}}> */}
-        <div className="title1">
+        <div className="title1" style={{backgroundColor:`${this.props.myBackgroundColor}`}}>
           <button className="selectButton_mentee" onClick={this.changeByMentee} type="button">
             멘티
             </button>
@@ -257,6 +269,7 @@ class CodeEditor extends React.Component {
 
           <select className="selectButton3" id="theme" value={this.state.value} onChange={this.setTheme} >
             <option value="hc-black">&nbsp;dark&nbsp;</option>
+            <option value="darkBlue">&nbsp;darkBlue&nbsp;</option>
             <option value="vs-white">&nbsp;white&nbsp;</option>
 
           </select>

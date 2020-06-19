@@ -9,6 +9,11 @@ exports["default"] = void 0;
 var editor_select,editor_theme;
 
 var monaco = _interopRequireWildcard(require("../../../node_modules/monaco-editor/esm/vs/editor/editor.api"));
+import('monaco-themes/themes/Monokai.json')
+  .then(data => {
+      monaco.editor.defineTheme('monokai', data);
+      
+  })
 
 var _propTypes = _interopRequireDefault(require("../../../node_modules/prop-types"));
 
@@ -102,6 +107,14 @@ function (_React$Component) {
       if (prevProps.theme !== theme) {
          monaco.editor.setTheme(theme);
       }
+      if(theme === "darkBlue"){
+
+        import('monaco-themes/themes/Oceanic Next.json')
+        .then(data => {
+            monaco.editor.defineTheme('OceanicNext', data);
+            monaco.editor.setTheme('OceanicNext');
+        })
+      }
 
       if (editor && (width !== prevProps.width || height !== prevProps.height)) {
         editor.layout();
@@ -143,7 +156,9 @@ function (_React$Component) {
           options = _this$props2.options,
           overrideServices = _this$props2.overrideServices;  
           
+          
       if (this.containerElement) {
+        
         // Before initializing monaco editor
         Object.assign(options, this.editorWillMount());
         this.editor = monaco.editor.create(this.containerElement, _objectSpread({
